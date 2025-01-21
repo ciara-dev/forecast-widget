@@ -1,34 +1,141 @@
 .weather-widget {
   font-family: Arial, sans-serif;
-  width: 200px;
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f9f9f9;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .widget-location {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.widget-daily {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.daily-weather {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.day-header {
+  background: #007bff; /* Blue background */
+  color: white; /* White text */
+  padding: 5px 0;
+  width: 100%;
+}
+
+.widget-day {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.weather-content {
+  padding: 10px;
+}
+
+.widget-icon {
+  width: 105px;
+  height:100px;
+  margin-left: "auto";
+  margin-right: "auto";
+  margin: 10px 0;
+}
+
+.widget-temp-high,
+.widget-temp-low {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.widget-temp-high {
+  color: #ff5722; /* Highlight high temperature */
   font-weight: bold;
 }
 
-.widget-info {
-  margin-top: 10px;
+.widget-temp-low {
+  color: #2196f3; /* Highlight low temperature */
+  font-weight: bold;
+}
+
+.widget-wind-speed,
+.widget-precip {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 3px 0;
+}
+
+
+/*Hourly*/
+
+.widget-hourly {
+  display: flex;
+  justify-content: start;  /* Aligns items to the left */
+  gap: 15px;
+  flex-wrap: nowrap; /* Prevents wrapping, forces items to stay in a single row */
+  margin-top: 20px;
+  overflow-x: auto; /* Allows horizontal scrolling if the content overflows */
+}
+
+.hourly-header {
+  display: flex;
+  gap: 10px;
+}
+
+.hourly-weather {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.widget-hour {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  color: #007bff; /* Hour text color */
+}
+
+.weather-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.widget-icon {
+  width: 40px;
+  height: 40px;
+  margin: 5px 0;
 }
 
 .widget-temp {
-  font-size: 2rem;
-  color: #007bff;
+  font-size: 1rem;
+  margin: 5px 0;
 }
 
-.widget-desc {
+.widget-subtext {
   font-size: 0.9rem;
   color: #555;
+  margin: 5px 0;
 }
 
-.widget-loading,
-.widget-error {
-  color: #ff0000;
-  font-size: 0.9rem;
-}
