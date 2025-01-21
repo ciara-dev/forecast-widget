@@ -104,7 +104,8 @@ const WeatherWidget: React.FC = () => {
   };
 
   useEffect(() => {
-   //This prevent the call being made multiple time once the data is marked as collected
+    //This prevent the call being made multiple time once the data is marked as collected
+    //testing 
     if (hasFetched.current) return;
     hasFetched.current = true;
 
