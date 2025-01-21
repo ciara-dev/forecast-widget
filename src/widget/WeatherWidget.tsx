@@ -56,6 +56,7 @@ const WeatherWidget: React.FC = () => {
   const [type, setType] = useState<"daily" | "hourly">("daily");
   const [duration, setDuration] = useState<number>(7);
   const [error, setError] = useState<string | null>(null);
+  const [apiKey, setApiKey] = useState<string | null>(null);
   const hasFetched = useRef(false);
 
   const weatherMapping: WeatherMapping = {
@@ -103,39 +104,35 @@ const WeatherWidget: React.FC = () => {
   };
 
   useEffect(() => {
+   //This prevent the call being made multiple time once the data is marked as collected
     if (hasFetched.current) return;
-
     hasFetched.current = true;
 
     const params = new URLSearchParams(window.location.search);
-    const latParam = parseFloat(params.get("lat") || "0");
-    const lonParam = parseFloat(params.get("lon") || "0");
+    const latParam = parseFloat(params.get("lat") || "40.7128"); // Default to New York lat
+    const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
     const typeParam = params.get("type") as "daily" | "hourly";
-    const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "0");
+    const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "7");
+    const apiKeyParam = params.get("apiKey");
 
-    if (latParam && lonParam) {
-      setLocation({ lat: latParam, lon: lonParam });
+    if (!apiKeyParam) {
+      setError("API key is required");
+      return;
     }
 
-    if (typeParam === "hourly" || typeParam === "daily") {
-      setType(typeParam);
-    }
-
-    if (
-      durationParam &&
-      (typeParam === "hourly"
-        ? [6, 12].includes(durationParam)
-        : [3, 5, 7].includes(durationParam))
-    ) {
-      setDuration(durationParam);
-    }
+    setApiKey(apiKeyParam);
+    setLocation({ lat: latParam, lon: lonParam });
+    setType(typeParam === "hourly" || typeParam === "daily" ? typeParam : "daily");
+    setDuration(
+      (typeParam === "hourly" && [6, 12].includes(durationParam)) ||
+        (typeParam === "daily" && [3, 5, 7].includes(durationParam))
+        ? durationParam
+        : 7
+    );
 
     const fetchWeather = async () => {
-      const { lat, lon } = location;
-      const apiKey = "22ccfc5424b64920a681c2b721ce04e6";
-      const url = `https://api.myradar.dev/v1/forecast/${lat},${lon}?subscription-key=${apiKey}`;
-
       try {
+        const url = `https://api.myradar.dev/v1/forecast/${latParam},${lonParam}?subscription-key=${apiKeyParam}`;
         const response = await axios.get<WeatherData>(url);
         setWeather(response.data);
       } catch (err) {
@@ -145,7 +142,7 @@ const WeatherWidget: React.FC = () => {
     };
 
     fetchWeather();
-  }, [location, type, duration]);
+  }, []);
 
   const getDayName = (timestamp: number): string => {
     const date = new Date(timestamp * 1000);
@@ -211,6 +208,15 @@ const WeatherWidget: React.FC = () => {
                   hour12: true,
                 })}
               </h4>
+             
+                  <img
+                    className="widget-icon"
+                    src={weatherMapping[hour.icon]?.icon}
+                    alt={hour.icon}
+                    width={50}
+                    height={50}
+                  />
+              
               <p className="widget-temp">{hour.temperature}°F</p>
               <p>Real Feel: {hour.apparentTemperature}°F</p>
               <p>Precipitation: {Math.round(hour.precipProbability * 100)}%</p>
