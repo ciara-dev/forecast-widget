@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/forecast-widget/static/css/main.ff834f87.css",
-    "main.js": "/forecast-widget/static/js/main.282738cb.js",
+    "main.js": "/forecast-widget/static/js/main.a9defb67.js",
     "static/media/wind.png": "/forecast-widget/static/media/wind.5ddcf04190dc75c0cff5.png",
     "static/media/sleet.png": "/forecast-widget/static/media/sleet.31a947c35e368a479e1c.png",
     "static/media/partly-cloudy-day.png": "/forecast-widget/static/media/partly-cloudy-day.3987f0a614789e4e7452.png",
@@ -14,10 +14,10 @@
     "static/media/cloudy.png": "/forecast-widget/static/media/cloudy.4e8a200ccbf12eb27b8b.png",
     "index.html": "/forecast-widget/index.html",
     "main.ff834f87.css.map": "/forecast-widget/static/css/main.ff834f87.css.map",
-    "main.282738cb.js.map": "/forecast-widget/static/js/main.282738cb.js.map"
+    "main.a9defb67.js.map": "/forecast-widget/static/js/main.a9defb67.js.map"
   },
   "entrypoints": [
     "static/css/main.ff834f87.css",
-    "static/js/main.282738cb.js"
+    "static/js/main.a9defb67.js"
   ]
 }
