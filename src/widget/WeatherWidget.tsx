@@ -105,7 +105,7 @@ const WeatherWidget: React.FC = () => {
 
   useEffect(() => {
     //This prevent the call being made multiple time once the data is marked as collected
-    //testing 
+    
     if (hasFetched.current) return;
     hasFetched.current = true;
 
@@ -114,7 +114,7 @@ const WeatherWidget: React.FC = () => {
     const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
     const typeParam = params.get("type") as "daily" | "hourly";
     const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "7");
-    const apiKeyParam = params.get("apiKey");
+    const apiKeyParam = params.get("apiKey"); // add key in with or operator ||
 
     if (!apiKeyParam) {
       setError("API key is required");
