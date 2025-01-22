@@ -84,7 +84,7 @@
 
 .widget-hourly {
   display: flex;
-  justify-content: start;  /* Aligns items to the left */
+  justify-content: center;  /* Aligns items to the left */
   gap: 15px;
   flex-wrap: nowrap; /* Prevents wrapping, forces items to stay in a single row */
   margin-top: 20px;
@@ -138,4 +138,27 @@
   color: #555;
   margin: 5px 0;
 }
+
+/* Testing Dropdowns */
+.testing-dropdowns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.type-parent{
+  margin: 0 10px 0 3px;
+}
+
+.duration-parent{
+  margin: 0 10px 0 3px;
+}
+
+.type-label{
+  margin: 0 5px;
+}
+.duration-label{
+ margin: 0 5px;
+}
+
 
