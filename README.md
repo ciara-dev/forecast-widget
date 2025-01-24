@@ -1,7 +1,6 @@
-# Welcome the Forecast Widget ⛅🌡️🛰️
+# Welcome to the Forecast Widget ⛅🌡️🛰️
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+### Typescript/React
 
 In order to get this project to run you will need to:
 
