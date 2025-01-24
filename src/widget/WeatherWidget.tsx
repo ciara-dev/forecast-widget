@@ -127,7 +127,7 @@ const WeatherWidget: React.FC = () => {
     const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
     const typeParam = params.get("type") as "daily" | "hourly";
     const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "7");
-    const apiKeyParam = params.get("apiKey") ; // ADD KEY HERE with or operator ||
+    const apiKeyParam = params.get("apiKey") || "22ccfc5424b64920a681c2b721ce04e6"; // ADD KEY HERE with or operator ||
 
     if (!apiKeyParam) {
       setError("API key is required");
@@ -265,12 +265,14 @@ const WeatherWidget: React.FC = () => {
         <div className="widget-hourly">
           {weather.hourly.data.slice(0, duration).map((hour, index) => (
             <div key={index} className="hourly-weather">
+               <div className="day-header">
               <h4 className="widget-hour">
                 {new Date(hour.time * 1000).toLocaleTimeString("en-US", {
                   hour: "numeric",
                   hour12: true,
                 })}
-              </h4>
+                </h4>
+                </div>
              
                   <img
                     className="widget-icon"
@@ -281,8 +283,8 @@ const WeatherWidget: React.FC = () => {
                   />
               
               <p className="widget-temp">{hour.temperature}°F</p>
-              <p>Real Feel: {hour.apparentTemperature}°F</p>
-              <p>Precipitation: {Math.round(hour.precipProbability * 100)}%</p>
+              <p className="widget-feels-like">Feels like: {hour.apparentTemperature}°F</p>
+              <p className="widget-precipitation">Precipitation: {Math.round(hour.precipProbability * 100)}%</p>
             </div>
           ))}
         </div>
