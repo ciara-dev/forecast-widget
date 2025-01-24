@@ -17,22 +17,26 @@
 .widget-daily {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .daily-weather {
-  background: white;
-  border: 1px solid #ccc;
+  background: rgba(126, 143, 164, 0.9); /* Adjusted RGBA for transparency */
+  border: 1px solid transparent;
+  border-image-source: linear-gradient(170.97deg, rgba(153, 153, 153, 0) -1.23%, rgba(255, 255, 255, 0.1) 108.74%);
+  border-image-slice: 1; /* Required for border-image to work */
   border-radius: 8px;
   width: 120px;
+  
   display: flex;
   flex-direction: column;
+  
   align-items: center;
   overflow: hidden;
 }
 
 .day-header {
-  background: #007bff; /* Blue background */
+  background: linear-gradient(95.6deg, #FF567F -0.55%, #FF834E 114.37%);
   color: white; /* White text */
   padding: 5px 0;
   width: 100%;
@@ -56,6 +60,12 @@
   margin: 10px 0;
 }
 
+.widget-summary{
+  color: #fff;
+  /* font-size: 1.2rem; */
+  font-weight: bold;
+}
+
 .widget-temp-high,
 .widget-temp-low {
   font-size: 1rem;
@@ -63,12 +73,21 @@
 }
 
 .widget-temp-high {
-  color: #ff5722; /* Highlight high temperature */
+  color: #FFF; /* Highlight high temperature */
   font-weight: bold;
 }
 
+.temp-low-box{
+  border-radius: 3px;
+  margin: 5px 0;
+  padding: 2px;
+  background-color: #FFF;
+  /* width: 15px;
+  height: 15px; */
+}
+
 .widget-temp-low {
-  color: #2196f3; /* Highlight low temperature */
+  color: #000; /* Highlight low temperature */
   font-weight: bold;
 }
 

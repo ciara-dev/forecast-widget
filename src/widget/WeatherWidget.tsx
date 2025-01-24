@@ -9,7 +9,9 @@ import Wind from "../images/wind.png";
 import Fog from "../images/fog.png";
 import Cloudy from "../images/cloudy.png";
 import PartlyCloudyDay from "../images/partly-cloudy-day.png";
+import PartlyCloudyDayBackgorund from '../images/backgrounds/partly-cloudy-day_Background.jpg'
 import PartlyCloudyNight from "../images/partly-cloudy-night.png";
+import MyRadarLogo from '../images/logo/MyRadar_logo.png'
 import "../styles/widget.css";
 
 // Define Types
@@ -26,6 +28,7 @@ interface WeatherData {
 interface DailyForecast {
   time: number;
   icon: string;
+  summary: string;
   temperatureHigh: number;
   temperatureLow: number;
 }
@@ -47,7 +50,7 @@ interface Location {
 // Define WeatherMapping Type
 type WeatherMapping = Record<
   string,
-  { icon: string; gradient: string } | undefined
+  { icon: string; gradient: string, backgroundImage: string } | undefined
 >;
 
 const WeatherWidget: React.FC = () => {
@@ -63,43 +66,53 @@ const WeatherWidget: React.FC = () => {
     "clear-day": {
       icon: ClearDay,
       gradient: "linear-gradient(to bottom, #87CEEB, #FFD700)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "clear-night": {
       icon: ClearNight,
       gradient: "linear-gradient(to bottom, #2C3E50, #34495E)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "rain": {
       icon: Rain,
       gradient: "linear-gradient(to bottom, #4A90E2, #5C6BC0)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "snow": {
       icon: Snow,
       gradient: "linear-gradient(to bottom, #E0F7FA, #B3E5FC)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "sleet": {
       icon: Sleet,
       gradient: "linear-gradient(to bottom, #9E9E9E, #607D8B)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "wind": {
       icon: Wind,
       gradient: "linear-gradient(to bottom, #9E9E9E, #ECEFF1)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "fog": {
       icon: Fog,
       gradient: "linear-gradient(to bottom, #BDBDBD, #E0E0E0)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "cloudy": {
       icon: Cloudy,
       gradient: "linear-gradient(to bottom, #90A4AE, #CFD8DC)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "partly-cloudy-day": {
       icon: PartlyCloudyDay,
       gradient:
         "linear-gradient(0deg, hsla(49, 84%, 66%, 1) 0%, hsla(39, 34%, 66%, 1) 50%, hsla(220, 11%, 78%, 1) 100%)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
     "partly-cloudy-night": {
       icon: PartlyCloudyNight,
       gradient: "linear-gradient(to bottom, #4C4F5E, #9198A4)",
+      backgroundImage: PartlyCloudyDayBackgorund,
     },
   };
 
@@ -114,7 +127,7 @@ const WeatherWidget: React.FC = () => {
     const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
     const typeParam = params.get("type") as "daily" | "hourly";
     const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "7");
-    const apiKeyParam = params.get("apiKey"); // add key in with or operator ||
+    const apiKeyParam = params.get("apiKey") ; // ADD KEY HERE with or operator ||
 
     if (!apiKeyParam) {
       setError("API key is required");
@@ -179,13 +192,15 @@ const WeatherWidget: React.FC = () => {
   const currentWeather = weather.daily?.data[0];
   const currentMapping = currentWeather && weatherMapping[currentWeather.icon] 
     ? weatherMapping[currentWeather.icon] 
-    : { gradient: "linear-gradient(to bottom, #FFF, #EEE)" };
+    :  { backgroundImage: "" };
 
   return (
     <div
       className="weather-widget"
       style={{
-        background: currentMapping?.gradient,
+        backgroundImage: `url(${currentMapping?.backgroundImage}`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         borderRadius: "8px",
         padding: "20px",
         color: "#333",
@@ -222,12 +237,15 @@ const WeatherWidget: React.FC = () => {
           </select>
         </div>
       </div>
+      <img className="myradar-logo" style={{width: "35%", margin: "5px auto"}} src={MyRadarLogo} alt="MyRadar Logo" />
       <h3 className="widget-location">{weather.timezone}</h3>
       {type === "daily" ? (
         <div className="widget-daily">
           {weather.daily.data.slice(0, duration).map((day, index) => (
             <div key={index} className="daily-weather">
-              <h4 className="widget-day">{getDayName(day.time)}</h4>
+              <div className="day-header">
+                <h4 className="widget-day">{getDayName(day.time)}</h4>
+                </div>
               <img
                 className="widget-icon"
                 src={weatherMapping[day.icon]?.icon}
@@ -235,8 +253,11 @@ const WeatherWidget: React.FC = () => {
                 width={50}
                 height={50}
               />
-              <p className="widget-temp-high">{day.temperatureHigh}°F</p>
-              <p className="widget-temp-low">{day.temperatureLow}°F</p>
+              <p className="widget-summary">{day.summary}</p>
+              <p className="widget-temp-high">{day.temperatureHigh}°</p>
+                <div className="temp-low-box">
+                 <p className="widget-temp-low">{day.temperatureLow}°</p>
+                </div>
             </div>
           ))}
         </div>
