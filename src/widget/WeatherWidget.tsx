@@ -127,7 +127,7 @@ const WeatherWidget: React.FC = () => {
     const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
     const typeParam = params.get("type") as "daily" | "hourly";
     const durationParam = parseInt(params.get(typeParam === "hourly" ? "hours" : "days") || "7");
-    const apiKeyParam = params.get("apiKey") || "22ccfc5424b64920a681c2b721ce04e6"; // ADD KEY HERE with or operator ||
+    const apiKeyParam = params.get("apiKey") || process.env.REACT_APP_MYRADAR_KEY; // ADD KEY HERE with or operator ||
 
     if (!apiKeyParam) {
       setError("API key is required");
