@@ -48,7 +48,7 @@
   margin: 0;
 }
 
-.weather-content {
+.daily-content {
   padding: 10px;
 }
 
@@ -66,13 +66,9 @@
   font-weight: bold;
 }
 
-.widget-temp-high,
-.widget-temp-low {
+.widget-temp-high {
   font-size: 1rem;
   margin: 5px 0;
-}
-
-.widget-temp-high {
   color: #FFF; /* Highlight high temperature */
   font-weight: bold;
 }
@@ -87,17 +83,11 @@
 }
 
 .widget-temp-low {
+  font-size: 1rem;
+  margin: 5px 0;
   color: #000; /* Highlight low temperature */
   font-weight: bold;
 }
-
-.widget-wind-speed,
-.widget-precip {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 3px 0;
-}
-
 
 /*Hourly*/
 
@@ -135,11 +125,8 @@
   color: #FFF; /* Hour text color */
 }
 
-.weather-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.hourly-content {
+  padding: 10px;
 }
 
 .widget-icon {
@@ -160,6 +147,12 @@
   margin: 5px 0;
 }
 .widget-precipitation {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #FFF;
+  margin: 5px 0;
+}
+.widget-wind-direction {
   font-weight: 600;
   font-size: 1rem;
   color: #FFF;
