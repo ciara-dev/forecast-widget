@@ -17,22 +17,26 @@
 .widget-daily {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .daily-weather {
-  background: white;
-  border: 1px solid #ccc;
+  background: rgba(126, 143, 164, 0.9); /* Adjusted RGBA for transparency */
+  border: 1px solid transparent;
+  border-image-source: linear-gradient(170.97deg, rgba(153, 153, 153, 0) -1.23%, rgba(255, 255, 255, 0.1) 108.74%);
+  border-image-slice: 1; /* Required for border-image to work */
   border-radius: 8px;
   width: 120px;
+  
   display: flex;
   flex-direction: column;
+  
   align-items: center;
   overflow: hidden;
 }
 
 .day-header {
-  background: #007bff; /* Blue background */
+  background: linear-gradient(95.6deg, #FF567F -0.55%, #FF834E 114.37%);
   color: white; /* White text */
   padding: 5px 0;
   width: 100%;
@@ -44,7 +48,7 @@
   margin: 0;
 }
 
-.weather-content {
+.daily-content {
   padding: 10px;
 }
 
@@ -56,35 +60,40 @@
   margin: 10px 0;
 }
 
-.widget-temp-high,
-.widget-temp-low {
-  font-size: 1rem;
-  margin: 5px 0;
+.widget-summary{
+  color: #fff;
+  /* font-size: 1.2rem; */
+  font-weight: bold;
 }
 
 .widget-temp-high {
-  color: #ff5722; /* Highlight high temperature */
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #FFF; /* Highlight high temperature */
   font-weight: bold;
+}
+
+.temp-low-box{
+  border-radius: 3px;
+  margin: 5px 0;
+  padding: 2px;
+  background-color: #FFF;
+  /* width: 15px;
+  height: 15px; */
 }
 
 .widget-temp-low {
-  color: #2196f3; /* Highlight low temperature */
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #000; /* Highlight low temperature */
   font-weight: bold;
 }
-
-.widget-wind-speed,
-.widget-precip {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 3px 0;
-}
-
 
 /*Hourly*/
 
 .widget-hourly {
   display: flex;
-  justify-content: start;  /* Aligns items to the left */
+  justify-content: center;  /* Aligns items to the left */
   gap: 15px;
   flex-wrap: nowrap; /* Prevents wrapping, forces items to stay in a single row */
   margin-top: 20px;
@@ -97,45 +106,79 @@
 }
 
 .hourly-weather {
-  background: white;
-  border: 1px solid #ccc;
+  background: rgba(126, 143, 164, 0.9); /* Matched with .daily-weather */
+  border: 1px solid transparent;
+  border-image-source: linear-gradient(170.97deg, rgba(153, 153, 153, 0) -1.23%, rgba(255, 255, 255, 0.1) 108.74%);
+  border-image-slice: 1;
   border-radius: 8px;
-  width: 100px;
-  padding: 10px;
-  text-align: center;
+  width: 120px; /* Matched with .daily-weather */
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 
 .widget-hour {
   font-size: 1rem;
   font-weight: bold;
   margin: 0;
-  color: #007bff; /* Hour text color */
+  color: #FFF; /* Hour text color */
 }
 
-.weather-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.hourly-content {
+  padding: 10px;
 }
 
 .widget-icon {
-  width: 40px;
-  height: 40px;
-  margin: 5px 0;
+  width: 105px; /* Matched size */
+  height: 100px;
+  margin: 10px 0;
 }
 
 .widget-temp {
+  color: #fff;
+  font-weight: bold;
+}
+
+.widget-feels-like {
+  font-weight: 600;
   font-size: 1rem;
+  color: #FFF;
+  margin: 5px 0;
+}
+.widget-precipitation {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #FFF;
+  margin: 5px 0;
+}
+.widget-wind-direction {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #FFF;
   margin: 5px 0;
 }
 
-.widget-subtext {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 5px 0;
+/* Testing Dropdowns */
+.testing-dropdowns{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.type-parent{
+  margin: 0 10px 0 3px;
+}
+
+.duration-parent{
+  margin: 0 10px 0 3px;
+}
+
+.type-label{
+  margin: 0 5px;
+}
+.duration-label{
+ margin: 0 5px;
+}
+
 
