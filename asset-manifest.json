@@ -1,23 +1,26 @@
 {
   "files": {
-    "main.css": "/forecast-widget/static/css/main.ff834f87.css",
-    "main.js": "/forecast-widget/static/js/main.509e0dfc.js",
-    "static/media/wind.png": "/forecast-widget/static/media/wind.5ddcf04190dc75c0cff5.png",
+    "main.css": "/forecast-widget/static/css/main.b2ba22f0.css",
+    "main.js": "/forecast-widget/static/js/main.5a098a01.js",
+    "static/media/partly-cloudy-day_Background.jpg": "/forecast-widget/static/media/partly-cloudy-day_Background.96d56ca256911d2c3bec.jpg",
     "static/media/sleet.png": "/forecast-widget/static/media/sleet.31a947c35e368a479e1c.png",
     "static/media/partly-cloudy-day.png": "/forecast-widget/static/media/partly-cloudy-day.3987f0a614789e4e7452.png",
     "static/media/fog.png": "/forecast-widget/static/media/fog.a757dedaf4cc35263d54.png",
     "static/media/rain.png": "/forecast-widget/static/media/rain.83b62b96bce39d565ecb.png",
     "static/media/partly-cloudy-night.png": "/forecast-widget/static/media/partly-cloudy-night.7d3a00c53509e47f567a.png",
+    "static/media/MyRadar_logo.png": "/forecast-widget/static/media/MyRadar_logo.0b7ffac4cae5612d159a.png",
     "static/media/snow.png": "/forecast-widget/static/media/snow.1df093cf3f84d2d77f5e.png",
     "static/media/clear-day.png": "/forecast-widget/static/media/clear-day.3f69d66aef8f45e0bcac.png",
     "static/media/clear-night.png": "/forecast-widget/static/media/clear-night.55c7406fc3cd44272eeb.png",
+    "static/media/wind_level4.png": "/forecast-widget/static/media/wind_level4.494e86849a6482f80d50.png",
     "static/media/cloudy.png": "/forecast-widget/static/media/cloudy.4e8a200ccbf12eb27b8b.png",
+    "static/media/wind_level3.png": "/forecast-widget/static/media/wind_level3.4756f44de599c80db5f8.png",
     "index.html": "/forecast-widget/index.html",
-    "main.ff834f87.css.map": "/forecast-widget/static/css/main.ff834f87.css.map",
-    "main.509e0dfc.js.map": "/forecast-widget/static/js/main.509e0dfc.js.map"
+    "main.b2ba22f0.css.map": "/forecast-widget/static/css/main.b2ba22f0.css.map",
+    "main.5a098a01.js.map": "/forecast-widget/static/js/main.5a098a01.js.map"
   },
   "entrypoints": [
-    "static/css/main.ff834f87.css",
-    "static/js/main.509e0dfc.js"
+    "static/css/main.b2ba22f0.css",
+    "static/js/main.5a098a01.js"
   ]
 }
