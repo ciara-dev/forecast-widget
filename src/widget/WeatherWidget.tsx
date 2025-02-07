@@ -1,24 +1,23 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import ClearDay from "../images/clear-day.png";
-import ClearNight from "../images/clear-night.png";
-import Rain from "../images/rain.png";
-import Snow from "../images/snow.png";
-import Sleet from "../images/sleet.png";
-import Wind from "../images/wind.png";
-import WindLevel2 from "../images/wind_level2.png";
-import WindLevel3 from "../images/wind_level3.png";
-import WindLevel4 from "../images/wind_level4.png";
-import Fog from "../images/fog.png";
-import Cloudy from "../images/cloudy.png";
-import PartlyCloudyDay from "../images/partly-cloudy-day.png";
+import ClearDay from "../images/icons/clear-day.png";
+import ClearNight from "../images/icons/clear-night.png";
+import Rain from "../images/icons/rain.png";
+import Snow from "../images/icons/snow.png";
+import Sleet from "../images/icons/sleet.png";
+import Wind from "../images/icons/wind.png";
+import WindLevel2 from "../images/icons/wind_level2.png";
+import WindLevel3 from "../images/icons/wind_level3.png";
+import WindLevel4 from "../images/icons/wind_level4.png";
+import Fog from "../images/icons/fog.png";
+import Cloudy from "../images/icons/cloudy.png";
+import PartlyCloudyDay from "../images/icons/partly-cloudy-day.png";
 import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background.jpg";
-import PartlyCloudyNight from "../images/partly-cloudy-night.png";
+import PartlyCloudyNight from "../images/icons/partly-cloudy-night.png";
 import WindDetail from "../images/detail_icons/windDetail.png"
 import RainDetail from "../images/detail_icons/rainDetail.png"
 import MyRadarLogo from "../images/logo/MyRadar_logo.png";
 import "../styles/widget.css";
-
 // Define Types
 interface WeatherData {
   daily: {
