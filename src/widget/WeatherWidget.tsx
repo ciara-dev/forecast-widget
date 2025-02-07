@@ -14,6 +14,8 @@ import Cloudy from "../images/cloudy.png";
 import PartlyCloudyDay from "../images/partly-cloudy-day.png";
 import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background.jpg";
 import PartlyCloudyNight from "../images/partly-cloudy-night.png";
+import WindDetail from "../images/detail_icons/windDetail.png"
+import RainDetail from "../images/detail_icons/rainDetail.png"
 import MyRadarLogo from "../images/logo/MyRadar_logo.png";
 import "../styles/widget.css";
 
@@ -34,7 +36,9 @@ interface DailyForecast {
   windSpeed: number;
   summary: string;
   temperatureHigh: number;
-  temperatureLow: number;
+  apparentTemperatureMax: number;
+  windBearing: number;
+  precipProbability: number;
 }
 
 interface HourlyForecast {
@@ -199,6 +203,12 @@ const WeatherWidget: React.FC = () => {
     return date.toLocaleDateString("en-US", { weekday: "long" });
   };
 
+  //Summary Sentence split
+  const getSummarySentence = (text: string): string => {
+    const match = text.match(/(.*?)[.!?]\s|(.+)[.!?]$/);
+    return match ? (match[1] || match[2]) : text;
+  };
+
   //Wind leveling Icons
   function getWindIcon(windSpeed: number): string {
     if (windSpeed <= 10) return Wind;
@@ -275,34 +285,46 @@ const WeatherWidget: React.FC = () => {
         src={MyRadarLogo}
         alt="MyRadar Logo"
       />
-      <h3 className="widget-location">{weather.timezone}</h3>
+      {/* <h3 className="widget-location">{weather.timezone}</h3> */}
       {type === "daily" ? (
         <div className="widget-daily">
-          {weather.daily.data.slice(0, duration).map((day, index) => (
-            <div key={index} className="daily-weather">
-              <div className="day-header">
-                <h4 className="widget-day">{getDayName(day.time)}</h4>
-              </div>
-              <div className="daily-content">
-                <img
-                  className="widget-icon"
-                  src={
-                    day.icon === "wind"
-                      ? getWindIcon(day.windSpeed) // Replace only if the icon is wind
-                      : weatherMapping[day.icon]?.icon // Use default mapping otherwise
-                  }
-                  alt={day.icon}
-                  width={50}
-                  height={50}
-                />
-                <p className="widget-summary">{day.summary}</p>
-                <p className="widget-temp-high">{Math.round(day.temperatureHigh)}°</p>
-                <div className="temp-low-box">
-                  <p className="widget-temp-low">{Math.round(day.temperatureLow)}°</p>
+          {weather.daily.data.slice(0, duration).map((day, index) => {
+            const windDirection = degToCompass(day.windBearing); // Convert wind bearing to direction
+            return (
+              <div key={index} className="daily-weather">
+                <div className="day-header">
+                  <h4 className="widget-day">{getDayName(day.time)}</h4>
+                </div>
+                <div className="daily-content">
+                  <img
+                    className="widget-icon"
+                    src={
+                      day.icon === "wind"
+                        ? getWindIcon(day.windSpeed) // Replace only if the icon is wind
+                        : weatherMapping[day.icon]?.icon // Use default mapping otherwise
+                    }
+                    alt={day.icon}
+                    width={50}
+                    height={50}
+                  />
+                  <p className="widget-temp-high">{Math.round(day.temperatureHigh)}°</p>
+                  <p className="widget-feels-like-high">Feels like {Math.round(day.apparentTemperatureMax)}°</p>
+                  <p className="widget-summary">{getSummarySentence(day.summary)}</p>
+                  <div className="widget-windRain-box">
+                    <div className="wind-box">
+                      <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
+                      {/* The multiplication of 2.23694 is to convert m/s to MPH */}
+                      <p className="widget-wind-direction">{windDirection} {Math.round(day.windSpeed * 2.23694)} MPH</p>
+                    </div>
+                    <div className="precip-box">
+                      <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
+                      <p className="widget-precip-percent">{Math.round(day.precipProbability * 100)}%</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="widget-hourly">
@@ -330,9 +352,9 @@ const WeatherWidget: React.FC = () => {
                     width={50}
                     height={50}
                   />
-                  <p className="widget-temp">{hour.temperature}°F</p>
+                  <p className="widget-temp">{Math.round(hour.temperature)}°F</p>
                   <p className="widget-feels-like">
-                    Feels like: {hour.apparentTemperature}°F
+                    feels like: {Math.round(hour.apparentTemperature)}°F
                   </p>
                   <p className="widget-precipitation">
                     Precipitation: {Math.round(hour.precipProbability * 100)}%
@@ -343,8 +365,8 @@ const WeatherWidget: React.FC = () => {
             );
           })}
         </div>
-
       )}
+
     </div>
   );
 };
