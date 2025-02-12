@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/forecast-widget/static/css/main.96a19650.css",
-    "main.js": "/forecast-widget/static/js/main.2a58b8ec.js",
+    "main.js": "/forecast-widget/static/js/main.fa85e36c.js",
     "static/media/partly-cloudy-day_Background_2.png": "/forecast-widget/static/media/partly-cloudy-day_Background_2.38f55559aa13f5f9acf9.png",
     "static/media/Montserrat-Regular.ttf": "/forecast-widget/static/media/Montserrat-Regular.3cd786652b8a2e9d41f2.ttf",
     "static/media/sleet.png": "/forecast-widget/static/media/sleet.31a947c35e368a479e1c.png",
@@ -18,10 +18,10 @@
     "static/media/wind_level3.png": "/forecast-widget/static/media/wind_level3.4756f44de599c80db5f8.png",
     "index.html": "/forecast-widget/index.html",
     "main.96a19650.css.map": "/forecast-widget/static/css/main.96a19650.css.map",
-    "main.2a58b8ec.js.map": "/forecast-widget/static/js/main.2a58b8ec.js.map"
+    "main.fa85e36c.js.map": "/forecast-widget/static/js/main.fa85e36c.js.map"
   },
   "entrypoints": [
     "static/css/main.96a19650.css",
-    "static/js/main.2a58b8ec.js"
+    "static/js/main.fa85e36c.js"
   ]
 }
