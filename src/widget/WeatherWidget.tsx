@@ -12,12 +12,13 @@ import WindLevel4 from "../images/icons/wind_level4.png";
 import Fog from "../images/icons/fog.png";
 import Cloudy from "../images/icons/cloudy.png";
 import PartlyCloudyDay from "../images/icons/partly-cloudy-day.png";
-import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background.jpg";
+import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background_2.png";
 import PartlyCloudyNight from "../images/icons/partly-cloudy-night.png";
 import WindDetail from "../images/detail_icons/windDetail.png"
 import RainDetail from "../images/detail_icons/rainDetail.png"
 import MyRadarLogo from "../images/logo/MyRadar_logo.png";
 import "../styles/widget.css";
+
 // Define Types
 interface WeatherData {
   daily: {
@@ -43,6 +44,7 @@ interface DailyForecast {
 interface HourlyForecast {
   time: number;
   icon: string;
+  summary: string;
   windSpeed: number;
   temperature: number;
   apparentTemperature: number;
@@ -72,6 +74,8 @@ const WeatherWidget: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
   const hasFetched = useRef(false);
+
+  const [page, setPage] = useState(0);
 
   const weatherMapping: WeatherMapping = {
     "clear-day": {
@@ -141,7 +145,7 @@ const WeatherWidget: React.FC = () => {
       params.get(typeParam === "hourly" ? "hours" : "days") || "7"
     );
     const apiKeyParam =
-      params.get("apiKey"); // ADD KEY HERE with or operator || process.env.REACT_APP_MYRADAR_KEY
+      params.get("apiKey") || process.env.REACT_APP_MYRADAR_KEY; // ADD KEY HERE with or operator ||
 
     if (!apiKeyParam) {
       setError("API key is required");
@@ -225,6 +229,28 @@ const WeatherWidget: React.FC = () => {
     return directions[val % 16];
   }
 
+  const scrollLeft = () => {
+    if (page > 0) setPage(page - 1);
+  };
+
+  const scrollRight = () => {
+    if (page < 1) setPage(page + 1);
+  };
+
+  // Calculate start and end indices for pagination (only for 12-hour forecast)
+  const startIndex = type === "hourly" && duration === 12 ? page * 6 : 0;
+  const endIndex = type === "hourly" && duration === 12 ? startIndex + 6 : duration;
+
+  // Determine visibility of arrows
+  const showLeftArrow = type === "hourly" && duration === 12 && page > 0;
+  const showRightArrow = type === "hourly" && duration === 12 && page < 1;
+
+  const widgetHeaderStyle = {
+    display: "flex",
+    justifyContent: showLeftArrow || showRightArrow ? "space-evenly" : "center",
+    alignItems: "center",
+  };
+
   if (error) {
     return <div className="widget-error">{error}</div>;
   }
@@ -278,12 +304,21 @@ const WeatherWidget: React.FC = () => {
           </select>
         </div>
       </div>
-      <img
-        className="myradar-logo"
-        style={{ width: "25%", margin: "5px auto" }}
-        src={MyRadarLogo}
-        alt="MyRadar Logo"
-      />
+      <div className="widget-header" style={widgetHeaderStyle}>
+        <div className="logo-box">
+          <img style={{ width: "100%", margin: "5px auto" }} className="myradar-logo" src={MyRadarLogo} alt="MyRadar Logo" />
+        </div>
+        {type === "hourly" && duration === 12 && (
+          <div className="arrow-buttons">
+            {showLeftArrow && (
+              <button onClick={scrollLeft} className="arrow left">←</button>
+            )}
+            {showRightArrow && (
+              <button onClick={scrollRight} className="arrow right">→</button>
+            )}
+          </div>
+        )}
+      </div>
       {/* <h3 className="widget-location">{weather.timezone}</h3> */}
       {type === "daily" ? (
         <div className="widget-daily">
@@ -327,7 +362,7 @@ const WeatherWidget: React.FC = () => {
         </div>
       ) : (
         <div className="widget-hourly">
-          {weather.hourly.data.slice(0, duration).map((hour, index) => {
+          {weather.hourly.data.slice(startIndex, endIndex).map((hour, index) => {
             const windDirection = degToCompass(hour.windBearing); // Convert wind bearing to direction
             return (
               <div key={index} className="hourly-weather">
@@ -335,6 +370,7 @@ const WeatherWidget: React.FC = () => {
                   <h4 className="widget-hour">
                     {new Date(hour.time * 1000).toLocaleTimeString("en-US", {
                       hour: "numeric",
+                      minute: 'numeric',
                       hour12: true,
                     })}
                   </h4>
@@ -353,12 +389,21 @@ const WeatherWidget: React.FC = () => {
                   />
                   <p className="widget-temp">{Math.round(hour.temperature)}°F</p>
                   <p className="widget-feels-like">
-                    feels like: {Math.round(hour.apparentTemperature)}°F
+                    Feels like: {Math.round(hour.apparentTemperature)}°F
                   </p>
-                  <p className="widget-precipitation">
-                    Precipitation: {Math.round(hour.precipProbability * 100)}%
-                  </p>
-                  <p className="widget-wind-direction">Wind: {windDirection}</p>
+                  <p className="widget-summary">{getSummarySentence(hour.summary)}</p>
+
+                  <div className="widget-windRain-box">
+                    <div className="wind-box">
+                      <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
+
+                      <p className="widget-wind-direction">{windDirection} {Math.round(hour.windSpeed * 2.23694)} MPH</p>
+                    </div>
+                    <div className="precip-box">
+                      <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
+                      <p className="widget-precip-percent">{Math.round(hour.precipProbability * 100)}%</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             );
