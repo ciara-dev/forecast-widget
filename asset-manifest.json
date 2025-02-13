@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/forecast-widget/static/css/main.96a19650.css",
-    "main.js": "/forecast-widget/static/js/main.fa85e36c.js",
+    "main.css": "/forecast-widget/static/css/main.2380c774.css",
+    "main.js": "/forecast-widget/static/js/main.ba5ae07b.js",
     "static/media/partly-cloudy-day_Background_2.png": "/forecast-widget/static/media/partly-cloudy-day_Background_2.38f55559aa13f5f9acf9.png",
     "static/media/Montserrat-Regular.ttf": "/forecast-widget/static/media/Montserrat-Regular.3cd786652b8a2e9d41f2.ttf",
     "static/media/sleet.png": "/forecast-widget/static/media/sleet.31a947c35e368a479e1c.png",
@@ -17,11 +17,11 @@
     "static/media/cloudy.png": "/forecast-widget/static/media/cloudy.4e8a200ccbf12eb27b8b.png",
     "static/media/wind_level3.png": "/forecast-widget/static/media/wind_level3.4756f44de599c80db5f8.png",
     "index.html": "/forecast-widget/index.html",
-    "main.96a19650.css.map": "/forecast-widget/static/css/main.96a19650.css.map",
-    "main.fa85e36c.js.map": "/forecast-widget/static/js/main.fa85e36c.js.map"
+    "main.2380c774.css.map": "/forecast-widget/static/css/main.2380c774.css.map",
+    "main.ba5ae07b.js.map": "/forecast-widget/static/js/main.ba5ae07b.js.map"
   },
   "entrypoints": [
-    "static/css/main.96a19650.css",
-    "static/js/main.fa85e36c.js"
+    "static/css/main.2380c774.css",
+    "static/js/main.ba5ae07b.js"
   ]
 }
