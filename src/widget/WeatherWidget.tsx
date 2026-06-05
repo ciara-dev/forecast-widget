@@ -269,12 +269,6 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
   const showLeftArrow = type === "hourly" && duration === 12 && page > 0;
   const showRightArrow = type === "hourly" && duration === 12 && page < 1;
 
-  const widgetHeaderStyle = {
-    display: "flex",
-    justifyContent: showLeftArrow || showRightArrow ? "space-evenly" : "center",
-    alignItems: "center",
-  };
-
   if (error) {
     return <div className="widget-error">{error}</div>;
   }
@@ -301,36 +295,10 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
         color: "#333",
       }}
     >
-      {/* Testing dropdowns to swtich between hourly and daily times */}
-      <div className="testing-dropdowns">
-        <div className="type-parent">
-          <label className="type-label">Type:</label>
-          <select value={type} onChange={handleTypeChange}>
-            <option value="daily">Daily</option>
-            <option value="hourly">Hourly</option>
-          </select>
-        </div>
-        <div className="duration-parent">
-          <label className="duration-label">Duration:</label>
-          <select value={duration} onChange={handleDurationChange}>
-            {type === "daily" ? (
-              <>
-                <option value={3}>3 Days</option>
-                <option value={5}>5 Days</option>
-                <option value={7}>7 Days</option>
-              </>
-            ) : (
-              <>
-                <option value={6}>6 Hours</option>
-                <option value={12}>12 Hours</option>
-              </>
-            )}
-          </select>
-        </div>
-      </div>
-      <div className="widget-header" style={widgetHeaderStyle}>
+     <div className="widget-inner">
+      <div className="widget-header">
         <div className="logo-box">
-          <img style={{ width: "100%", margin: "5px auto" }} className="myradar-logo" src={MyRadarLogo} alt="MyRadar Logo" />
+          <img className="myradar-logo" src={MyRadarLogo} alt="MyRadar Logo" />
         </div>
         {type === "hourly" && duration === 12 && (
           <div className="arrow-buttons">
@@ -342,6 +310,33 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
             )}
           </div>
         )}
+        {/* Testing dropdowns to swtich between hourly and daily times */}
+        <div className="testing-dropdowns">
+          <div className="type-parent">
+            <label className="type-label">Type:</label>
+            <select value={type} onChange={handleTypeChange}>
+              <option value="daily">Daily</option>
+              <option value="hourly">Hourly</option>
+            </select>
+          </div>
+          <div className="duration-parent">
+            <label className="duration-label">Duration:</label>
+            <select value={duration} onChange={handleDurationChange}>
+              {type === "daily" ? (
+                <>
+                  <option value={3}>3 Days</option>
+                  <option value={5}>5 Days</option>
+                  <option value={7}>7 Days</option>
+                </>
+              ) : (
+                <>
+                  <option value={6}>6 Hours</option>
+                  <option value={12}>12 Hours</option>
+                </>
+              )}
+            </select>
+          </div>
+        </div>
       </div>
       {/* <h3 className="widget-location">{weather.timezone}</h3> */}
       {type === "daily" ? (
@@ -434,7 +429,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
           })}
         </div>
       )}
-
+     </div>
     </div>
   );
 };
