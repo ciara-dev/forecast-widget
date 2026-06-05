@@ -1,6 +1,6 @@
 {
   "name": "@myradar/forecast-widget",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A React weather forecast widget powered by the MyRadar API.",
   "homepage": "https://ciara-dev.github.io/forecast-widget",
   "license": "MIT",
