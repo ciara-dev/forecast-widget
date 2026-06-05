@@ -8,7 +8,11 @@ import * as path from "path";
 // CRA (react-scripts) still handles `npm start` / `npm run build` for the demo.
 export default defineConfig({
   plugins: [
-    react(),
+    // Use the classic JSX runtime (React.createElement) instead of the automatic
+    // runtime. The automatic runtime emits `import 'react/jsx-runtime'`, a subpath
+    // that some consumer bundlers/older setups fail to resolve ("Can't resolve
+    // 'react/jsx-runtime'"). Classic only needs the plain `react` import.
+    react({ jsxRuntime: "classic" }),
     // Emit a single bundled .d.ts for the public entry.
     dts({ include: ["src/lib.tsx", "src/widget/**", "src/custom.d.ts"], rollupTypes: true }),
     // Inject the bundled CSS into the JS so consumers don't import a separate file.
