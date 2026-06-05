@@ -1,3 +1,57 @@
+# @myradar/forecast-widget
+
+A React weather forecast widget powered by the MyRadar API.
+
+## Install
+
+```bash
+npm install @myradar/forecast-widget
+```
+
+`react` and `react-dom` (v18+) are peer dependencies — they're expected to already be in your app.
+
+## Usage
+
+```tsx
+import { WeatherWidget } from "@myradar/forecast-widget";
+
+export default function App() {
+  return (
+    <WeatherWidget
+      lat={40.7128}
+      lon={-74.006}
+      type="daily"
+      duration={7}
+      apikey="YOUR_MYRADAR_KEY"
+    />
+  );
+}
+```
+
+Styles are bundled and injected automatically — no separate CSS import needed.
+
+### Props
+
+| Prop       | Type                    | Required | Default      | Notes                                              |
+| ---------- | ----------------------- | -------- | ------------ | -------------------------------------------------- |
+| `lat`      | `number`                | no\*     | `40.7128`    | Latitude                                           |
+| `lon`      | `number`                | no\*     | `-74.006`    | Longitude                                          |
+| `apikey`   | `string`                | **yes**  | —            | MyRadar subscription key                           |
+| `type`     | `"daily" \| "hourly"`   | no       | `"daily"`    | Forecast granularity                               |
+| `duration` | `number`                | no       | `7` / `6`    | Daily: `3`, `5`, `7`. Hourly: `6`, `12`            |
+
+\* When a prop is omitted, the widget falls back to the matching URL query
+param (`?lat=&lon=&type=&days=/hours=&apiKey=`), which keeps the standalone /
+iframe embedding working from the same build.
+
+## Building the library
+
+```bash
+npm run build:lib   # outputs dist/ (ESM + CJS + .d.ts)
+```
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

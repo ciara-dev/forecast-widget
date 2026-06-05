@@ -12,7 +12,7 @@ import WindLevel4 from "../images/icons/wind_level4.png";
 import Fog from "../images/icons/fog.png";
 import Cloudy from "../images/icons/cloudy.png";
 import PartlyCloudyDay from "../images/icons/partly-cloudy-day.png";
-import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background_2.png";
+import PartlyCloudyDayBackgorund from "../images/backgrounds/partly-cloudy-day_Background_2.jpg";
 import PartlyCloudyNight from "../images/icons/partly-cloudy-night.png";
 import WindDetail from "../images/detail_icons/windDetail.png"
 import RainDetail from "../images/detail_icons/rainDetail.png"
@@ -52,27 +52,74 @@ interface HourlyForecast {
   windBearing: number;
 }
 
-interface Location {
-  lat: number;
-  lon: number;
-}
-
 // Define WeatherMapping Type
 type WeatherMapping = Record<
   string,
   { icon: string; gradient: string; backgroundImage: string } | undefined
 >;
 
-const WeatherWidget: React.FC = () => {
+export interface WeatherWidgetProps {
+  /** Latitude. Falls back to the `lat` URL param, then New York. */
+  lat?: number;
+  /** Longitude. Falls back to the `lon` URL param, then New York. */
+  lon?: number;
+  /** MyRadar subscription key. Required. */
+  apikey: string;
+  /** Forecast type. Defaults to "daily". */
+  type?: "daily" | "hourly";
+  /** Number of periods. Daily: 3, 5, or 7. Hourly: 6 or 12. */
+  duration?: number;
+}
+
+interface ResolvedConfig {
+  lat: number;
+  lon: number;
+  apikey: string;
+  type: "daily" | "hourly";
+  duration: number;
+}
+
+// Resolve config from props, falling back to URL params so the same build can be
+// embedded as a library (props) or served standalone in an iframe (?lat=&lon=...).
+function resolveConfig(props: WeatherWidgetProps): ResolvedConfig {
+  const params =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
+
+  const lat = props.lat ?? parseFloat(params.get("lat") || "40.7128");
+  const lon = props.lon ?? parseFloat(params.get("lon") || "-74.006");
+
+  const rawType = props.type ?? (params.get("type") as string | null);
+  const type: "daily" | "hourly" =
+    rawType === "hourly" || rawType === "daily" ? rawType : "daily";
+
+  const rawDuration =
+    props.duration ??
+    parseInt(params.get(type === "hourly" ? "hours" : "days") || "", 10);
+  const duration =
+    (type === "hourly" && [6, 12].includes(rawDuration)) ||
+    (type === "daily" && [3, 5, 7].includes(rawDuration))
+      ? rawDuration
+      : type === "hourly"
+      ? 6
+      : 7;
+
+  return { lat, lon, apikey: props.apikey, type, duration };
+}
+
+const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
+  // Resolve once on mount; props/URL are read a single time.
+  const configRef = useRef<ResolvedConfig | null>(null);
+  if (configRef.current === null) {
+    configRef.current = resolveConfig(props);
+  }
+  const config = configRef.current;
+
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState<Location>({
-    lat: 40.7128,
-    lon: -74.006,
-  });
-  const [type, setType] = useState<"daily" | "hourly">("daily");
-  const [duration, setDuration] = useState<number>(7);
+  const [type, setType] = useState<"daily" | "hourly">(config.type);
+  const [duration, setDuration] = useState<number>(config.duration);
   const [error, setError] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState<string | null>(null);
   const hasFetched = useRef(false);
 
   const [page, setPage] = useState(0);
@@ -132,41 +179,18 @@ const WeatherWidget: React.FC = () => {
   };
 
   useEffect(() => {
-    //This prevent the call being made multiple time once the data is marked as collected
-
+    // Prevent the call being made multiple times once the data is marked as collected
     if (hasFetched.current) return;
     hasFetched.current = true;
 
-    const params = new URLSearchParams(window.location.search);
-    const latParam = parseFloat(params.get("lat") || "40.7128"); // Default to New York lat
-    const lonParam = parseFloat(params.get("lon") || "-74.006"); // Default to New York lon
-    const typeParam = params.get("type") as "daily" | "hourly";
-    const durationParam = parseInt(
-      params.get(typeParam === "hourly" ? "hours" : "days") || "7"
-    );
-    const apiKeyParam =
-      params.get("apiKey") || process.env.REACT_APP_MYRADAR_KEY; // ADD KEY HERE with or operator ||
-
-    if (!apiKeyParam) {
+    if (!config.apikey) {
       setError("API key is required");
       return;
     }
 
-    setApiKey(apiKeyParam);
-    setLocation({ lat: latParam, lon: lonParam });
-    setType(
-      typeParam === "hourly" || typeParam === "daily" ? typeParam : "daily"
-    );
-    setDuration(
-      (typeParam === "hourly" && [6, 12].includes(durationParam)) ||
-        (typeParam === "daily" && [3, 5, 7].includes(durationParam))
-        ? durationParam
-        : 7
-    );
-
     const fetchWeather = async () => {
       try {
-        const url = `https://api.myradar.dev/v1/forecast/${latParam},${lonParam}?subscription-key=${apiKeyParam}`;
+        const url = `https://api.myradar.dev/v1/forecast/${config.lat},${config.lon}?subscription-key=${config.apikey}`;
         const response = await axios.get<WeatherData>(url);
         setWeather(response.data);
       } catch (err) {
@@ -176,7 +200,7 @@ const WeatherWidget: React.FC = () => {
     };
 
     fetchWeather();
-  }, []);
+  }, [config]);
 
   /****************************/
   //Testing Dropdown functions

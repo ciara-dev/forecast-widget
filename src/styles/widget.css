@@ -1,15 +1,15 @@
-h1, h2, h3, h4, h5, h6, p {
+.weather-widget h1,
+.weather-widget h2,
+.weather-widget h3,
+.weather-widget h4,
+.weather-widget h5,
+.weather-widget h6,
+.weather-widget p {
    font-family: 'Montserrat', sans-serif;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden; /* Prevents body scrolling */
-  height: 100%;
 }
 
 .weather-widget {
-  height: 100vh;
+  height: 100%; /* Fills its container; the consumer sizes the parent */
   border-radius: 8px;
   box-sizing: border-box; /* Ensures padding doesn't increase height */
   overflow: hidden;

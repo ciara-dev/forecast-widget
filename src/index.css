@@ -1,5 +1,12 @@
+/* Standalone / iframe page reset so the widget fills the viewport.
+   This lives in the app, not the published widget CSS. */
+html, body, #root {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  overflow: hidden; /* widget manages its own layout */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
