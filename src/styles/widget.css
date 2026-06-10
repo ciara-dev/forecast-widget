@@ -55,6 +55,41 @@
   display: block;
 }
 
+/* Next/prev controls for the 12-hour forecast (shown 6 hours per page),
+   sitting below the card row and aligned to its right edge */
+.arrow-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  align-items: center;
+}
+
+.arrow {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(216.32deg, #60728a 38.46%, #191e24 112.02%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.arrow:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.arrow:active {
+  transform: scale(0.95);
+}
+
 .widget-daily {
   display: flex;
   justify-content: center;

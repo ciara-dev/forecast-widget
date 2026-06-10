@@ -99,11 +99,11 @@ function resolveConfig(props: WeatherWidgetProps): ResolvedConfig {
     parseInt(params.get(type === "hourly" ? "hours" : "days") || "", 10);
   const duration =
     (type === "hourly" && [6, 12].includes(rawDuration)) ||
-    (type === "daily" && [3, 5, 7].includes(rawDuration))
+      (type === "daily" && [3, 5, 7].includes(rawDuration))
       ? rawDuration
       : type === "hourly"
-      ? 6
-      : 7;
+        ? 6
+        : 7;
 
   return { lat, lon, apikey: props.apikey, type, duration };
 }
@@ -207,12 +207,14 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
   const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setType(event.target.value as "daily" | "hourly");
     setDuration(event.target.value === "hourly" ? 6 : 7); // Set default duration
+    setPage(0); // Reset pagination when switching views
   };
 
   const handleDurationChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setDuration(parseInt(event.target.value, 10));
+    setPage(0); // Reset pagination when changing duration
   };
   /* End of Dropdown function */
   /****************************/
@@ -295,141 +297,141 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = (props) => {
         color: "#333",
       }}
     >
-     <div className="widget-inner">
-      <div className="widget-header">
-        <div className="logo-box">
-          <img className="myradar-logo" src={MyRadarLogo} alt="MyRadar Logo" />
+      <div className="widget-inner">
+        <div className="widget-header">
+          <div className="logo-box">
+            <img className="myradar-logo" src={MyRadarLogo} alt="MyRadar Logo" />
+          </div>
+          {/* Testing dropdowns to swtich between hourly and daily times */}
+          <div className="testing-dropdowns">
+            <div className="type-parent">
+              <label className="type-label">Type:</label>
+              <select value={type} onChange={handleTypeChange}>
+                <option value="daily">Daily</option>
+                <option value="hourly">Hourly</option>
+              </select>
+            </div>
+            <div className="duration-parent">
+              <label className="duration-label">Duration:</label>
+              <select value={duration} onChange={handleDurationChange}>
+                {type === "daily" ? (
+                  <>
+                    <option value={3}>3 Days</option>
+                    <option value={5}>5 Days</option>
+                    <option value={7}>7 Days</option>
+                  </>
+                ) : (
+                  <>
+                    <option value={6}>6 Hours</option>
+                    <option value={12}>12 Hours</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
         </div>
+        {/* <h3 className="widget-location">{weather.timezone}</h3> */}
+        {type === "daily" ? (
+          <div className="widget-daily">
+            {weather.daily.data.slice(0, duration).map((day, index) => {
+              const windDirection = degToCompass(day.windBearing); // Convert wind bearing to direction
+              return (
+                <div key={index} className="daily-weather">
+                  <div className="day-header">
+                    <h4 className="widget-day">{getDayName(day.time)}</h4>
+                  </div>
+                  <div className="daily-content">
+                    <img
+                      className="widget-icon"
+                      src={
+                        day.icon === "wind"
+                          ? getWindIcon(day.windSpeed) // Replace only if the icon is wind
+                          : weatherMapping[day.icon]?.icon // Use default mapping otherwise
+                      }
+                      alt={day.icon}
+                      width={50}
+                      height={50}
+                    />
+                    <p className="widget-temp-high">{Math.round(day.temperatureHigh)}°</p>
+                    <p className="widget-feels-like-high">Feels like {Math.round(day.apparentTemperatureMax)}°</p>
+                    <p className="widget-summary">{getSummarySentence(day.summary)}</p>
+                    <div className="widget-windRain-box">
+                      <div className="wind-box">
+                        <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
+                        {/* The multiplication of 2.23694 is to convert m/s to MPH */}
+                        <p className="widget-wind-direction">{windDirection} {Math.round(day.windSpeed * 2.23694)} MPH</p>
+                      </div>
+                      <div className="precip-box">
+                        <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
+                        <p className="widget-precip-percent">{Math.round(day.precipProbability * 100)}%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="widget-hourly">
+            {weather.hourly.data.slice(startIndex, endIndex).map((hour, index) => {
+              const windDirection = degToCompass(hour.windBearing); // Convert wind bearing to direction
+              return (
+                <div key={index} className="hourly-weather">
+                  <div className="day-header">
+                    <h4 className="widget-hour">
+                      {new Date(hour.time * 1000).toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: 'numeric',
+                        hour12: true,
+                      })}
+                    </h4>
+                  </div>
+                  <div className="hourly-content">
+                    <img
+                      className="widget-icon"
+                      src={
+                        hour.icon === "wind"
+                          ? getWindIcon(hour.windSpeed) // Replace only if the icon is wind
+                          : weatherMapping[hour.icon]?.icon // Use default mapping otherwise
+                      }
+                      alt={hour.icon}
+                      width={50}
+                      height={50}
+                    />
+                    <p className="widget-temp">{Math.round(hour.temperature)}°F</p>
+                    <p className="widget-feels-like">
+                      Feels like: {Math.round(hour.apparentTemperature)}°F
+                    </p>
+                    <p className="widget-summary">{getSummarySentence(hour.summary)}</p>
+
+                    <div className="widget-windRain-box">
+                      <div className="wind-box">
+                        <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
+
+                        <p className="widget-wind-direction">{windDirection} {Math.round(hour.windSpeed * 2.23694)} MPH</p>
+                      </div>
+                      <div className="precip-box">
+                        <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
+                        <p className="widget-precip-percent">{Math.round(hour.precipProbability * 100)}%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
         {type === "hourly" && duration === 12 && (
           <div className="arrow-buttons">
             {showLeftArrow && (
-              <button onClick={scrollLeft} className="arrow left">←</button>
+              <button onClick={scrollLeft} className="arrow left" aria-label="Previous hours">←</button>
             )}
             {showRightArrow && (
-              <button onClick={scrollRight} className="arrow right">→</button>
+              <button onClick={scrollRight} className="arrow right" aria-label="Next hours">→</button>
             )}
           </div>
         )}
-        {/* Testing dropdowns to swtich between hourly and daily times */}
-        <div className="testing-dropdowns">
-          <div className="type-parent">
-            <label className="type-label">Type:</label>
-            <select value={type} onChange={handleTypeChange}>
-              <option value="daily">Daily</option>
-              <option value="hourly">Hourly</option>
-            </select>
-          </div>
-          <div className="duration-parent">
-            <label className="duration-label">Duration:</label>
-            <select value={duration} onChange={handleDurationChange}>
-              {type === "daily" ? (
-                <>
-                  <option value={3}>3 Days</option>
-                  <option value={5}>5 Days</option>
-                  <option value={7}>7 Days</option>
-                </>
-              ) : (
-                <>
-                  <option value={6}>6 Hours</option>
-                  <option value={12}>12 Hours</option>
-                </>
-              )}
-            </select>
-          </div>
-        </div>
       </div>
-      {/* <h3 className="widget-location">{weather.timezone}</h3> */}
-      {type === "daily" ? (
-        <div className="widget-daily">
-          {weather.daily.data.slice(0, duration).map((day, index) => {
-            const windDirection = degToCompass(day.windBearing); // Convert wind bearing to direction
-            return (
-              <div key={index} className="daily-weather">
-                <div className="day-header">
-                  <h4 className="widget-day">{getDayName(day.time)}</h4>
-                </div>
-                <div className="daily-content">
-                  <img
-                    className="widget-icon"
-                    src={
-                      day.icon === "wind"
-                        ? getWindIcon(day.windSpeed) // Replace only if the icon is wind
-                        : weatherMapping[day.icon]?.icon // Use default mapping otherwise
-                    }
-                    alt={day.icon}
-                    width={50}
-                    height={50}
-                  />
-                  <p className="widget-temp-high">{Math.round(day.temperatureHigh)}°</p>
-                  <p className="widget-feels-like-high">Feels like {Math.round(day.apparentTemperatureMax)}°</p>
-                  <p className="widget-summary">{getSummarySentence(day.summary)}</p>
-                  <div className="widget-windRain-box">
-                    <div className="wind-box">
-                      <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
-                      {/* The multiplication of 2.23694 is to convert m/s to MPH */}
-                      <p className="widget-wind-direction">{windDirection} {Math.round(day.windSpeed * 2.23694)} MPH</p>
-                    </div>
-                    <div className="precip-box">
-                      <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
-                      <p className="widget-precip-percent">{Math.round(day.precipProbability * 100)}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="widget-hourly">
-          {weather.hourly.data.slice(startIndex, endIndex).map((hour, index) => {
-            const windDirection = degToCompass(hour.windBearing); // Convert wind bearing to direction
-            return (
-              <div key={index} className="hourly-weather">
-                <div className="day-header">
-                  <h4 className="widget-hour">
-                    {new Date(hour.time * 1000).toLocaleTimeString("en-US", {
-                      hour: "numeric",
-                      minute: 'numeric',
-                      hour12: true,
-                    })}
-                  </h4>
-                </div>
-                <div className="hourly-content">
-                  <img
-                    className="widget-icon"
-                    src={
-                      hour.icon === "wind"
-                        ? getWindIcon(hour.windSpeed) // Replace only if the icon is wind
-                        : weatherMapping[hour.icon]?.icon // Use default mapping otherwise
-                    }
-                    alt={hour.icon}
-                    width={50}
-                    height={50}
-                  />
-                  <p className="widget-temp">{Math.round(hour.temperature)}°F</p>
-                  <p className="widget-feels-like">
-                    Feels like: {Math.round(hour.apparentTemperature)}°F
-                  </p>
-                  <p className="widget-summary">{getSummarySentence(hour.summary)}</p>
-
-                  <div className="widget-windRain-box">
-                    <div className="wind-box">
-                      <img className="wind-detail-icon" src={WindDetail} alt="wind-detail-icon" />
-
-                      <p className="widget-wind-direction">{windDirection} {Math.round(hour.windSpeed * 2.23694)} MPH</p>
-                    </div>
-                    <div className="precip-box">
-                      <img className="rain-detail-icon" src={RainDetail} alt="rain-detail-icon" />
-                      <p className="widget-precip-percent">{Math.round(hour.precipProbability * 100)}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-     </div>
     </div>
   );
 };
